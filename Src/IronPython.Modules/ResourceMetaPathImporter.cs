@@ -69,6 +69,11 @@ The optional 'path' argument is ignored -- it's there for compatibility
 with the importer protocol."
             )]
         public object find_module(CodeContext /*!*/ context, string fullname, params object[] args) {
+            PythonContext pc = context.LanguageContext;
+
+            if (pc.BuiltinModules.TryGetValue(fullname, out Type type))
+                return null;
+
             var packedName = MakeFilename(fullname);
 
             foreach (var entry in SearchOrder) {
@@ -106,7 +111,7 @@ module, or raises ResourceImportError if it wasn't found."
                                                   ModuleOptions.None, out script);
 
             var dict = mod.__dict__;
-            // we do these here because we don't want CompileModule to initialize the module until we've set 
+            // we do these here because we don't want CompileModule to initialize the module until we've set
             // up some additional stuff
             dict.Add("__name__", fullname);
             dict.Add("__loader__", this);
@@ -174,7 +179,7 @@ module, or raises ResourceImportError if it wasn't found."
 
             if (data != null) {
                 if (isbytecode) {
-                    // would put in code to unmarshal the bytecode here...                                     
+                    // would put in code to unmarshal the bytecode here...
                 }
                 else {
                     code = data;

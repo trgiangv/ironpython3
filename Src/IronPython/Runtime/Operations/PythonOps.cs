@@ -1674,6 +1674,19 @@ namespace IronPython.Runtime.Operations {
         }
 
         /// <summary>
+        /// Python runtime helper to create an instance of Python List object.
+        ///
+        /// List has the initial provided capacity.
+        /// </summary>
+        /// <param name="capacity">Initial list capacity</param>
+        /// <returns></returns>
+        [NoSideEffects]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static PythonList MakeEmptyList(int capacity) {
+            return new PythonList(capacity);
+        }
+
+        /// <summary>
         /// Python runtime helper to create an instance of Tuple
         /// </summary>
         /// <param name="items"></param>
